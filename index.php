@@ -1,17 +1,23 @@
 <?php
 
-//ビンゴシート配列作成
-$bingo = array();
+//ビンゴシートのマス目($S)の作成
 $S = (int)trim(fgets(STDIN));
 
+//ビンゴシート配列($bingo)
+$bingo = array();
+
+//ビンゴシート配列の作成
 for($i = 0; $i < $S; $i++){
     $bingo[$i] =  explode(' ',trim(fgets(STDIN)));
 }
 
-//発表される単語配列作成
-$words = array();
+//発表される単語($N)の作成
 $N = (int)trim(fgets(STDIN));
 
+//発表される単語配列
+$words = array();
+
+//発表される単語配列の作成
 for($i = 0; $i < $N; $i++){
     $words[$i] = trim(fgets(STDIN));
     
@@ -20,10 +26,11 @@ for($i = 0; $i < $N; $i++){
 
 
 
+//ビンゴシートの単語と発表される単語が一致しているか確認する配列
 $opened = array();
 
 
-//データを初期化
+//ビンゴシートと発表される単語の一致確認のデータを初期化
 function initArray(&$opened,$S) {
     for ($y = 0; $y < $S; ++$y) {
         for($x = 0; $x < $S; ++$x) {
@@ -34,7 +41,7 @@ function initArray(&$opened,$S) {
 
 
 
-//$bingoの中の単語と一致している物を$wordと定義、一致している場合はその場所を返す
+//$bingoの中から指定した単語($word)を探し、一致してる単語があればその場所を返す
 function findPosByWord($bingo,$word,$S) {
         for($y = 0; $y < $S; $y++) {
           for($x = 0; $x < $S; $x++) {
@@ -53,7 +60,7 @@ function openBingo(&$opened, $x, $y) {
 
 
 
-//データを初期化作業
+//ビンゴシートの単語と発表される単語の一致確認データを初期化
 initArray($opened,$S);
 
 
@@ -71,8 +78,11 @@ function isClear($opened,$S) {
     // 横軸判定
     for($y = 0; $y < $S; ++$y) {
         for($x = 0; $x < $S; ++$x) {
+
+            //穴があいてない場合は中止する
             if (!$opened[$y][$x]) break;
-            
+
+            //一列穴が開いた場合trueとする
             if ($x == $S-1) {
                 return true;
             }
@@ -82,7 +92,11 @@ function isClear($opened,$S) {
      // 縦軸判定
     for($x = 0; $x < $S; ++$x) {
         for($y = 0; $y < $S; ++$y) {
+
+            //穴があいてない場合は中止する
             if (!$opened[$y][$x]) break;
+
+            //一列穴が開いた場合trueとする
             if ($y == $S-1) {
                 return true;
             }
@@ -91,15 +105,23 @@ function isClear($opened,$S) {
     
     // 斜め判定①
     for($i = 0; $i < $S; ++$i) {
-        if (!$opened[$i][$i]) break;
-        if ($i == $S-1) {
+
+            //穴があいてない場合は中止する
+            if (!$opened[$i][$i]) break;
+
+            //一列穴が開いた場合trueとする
+            if ($i == $S-1) {
             return true;
         }
     }
     
     // 斜め判定②
     for($i = 0; $i < $S; ++$i) {
+
+        //穴があいてない場合は中止する
         if (!$opened[$i][$S-1 - $i]) break;
+
+        //一列穴が開いた場合trueとする
         if ($i == $S-1) {
             return true;
         }
